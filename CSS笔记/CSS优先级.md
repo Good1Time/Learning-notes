@@ -45,8 +45,6 @@ h1 {
 }
 ```
 
-Copy to Clipboard
-
 当它应用在下面的 HTML 时：
 
 ```
@@ -57,14 +55,11 @@ Copy to Clipboard
 </html>
 ```
 
-Copy to Clipboard
-
 浏览器会将它渲染成：
-
-<iframe class="sample-code-frame" title="直接添加样式 vs. 继承样式 sample" id="frame_直接添加样式_vs._继承样式" src="https://yari-demos.prod.mdn.mozit.cloud/zh-CN/docs/Web/CSS/Specificity/_sample_.%E7%9B%B4%E6%8E%A5%E6%B7%BB%E5%8A%A0%E6%A0%B7%E5%BC%8F_vs._%E7%BB%A7%E6%89%BF%E6%A0%B7%E5%BC%8F.html" loading="lazy" style="box-sizing: content-box; border: 1px solid var(--border-primary); max-width: 100%; width: calc((100% - 2rem) - 2px); background: rgb(255, 255, 255); border-radius: var(--elem-radius); padding: 1rem;"></iframe>
+![CSS优先级-直接样式VS继承样式](imgs/CSS优先级-直接样式VS继承样式.png)
 
 因为 `h1` 选择器明确的定位到了元素，但绿色选择器的仅仅继承自其父级。
 
 **一张图更好的理解css 选择器优先级**
 
-![css权重解释图](E:\文档\Web学习\笔记\CSS笔记\imgs\css 选择器权重.png)
+![css权重解释图](imgs/css 选择器权重.png)
