@@ -22,6 +22,10 @@ JavaScript 有三种声明函数的方法：
 function print(s) {
   console.log(s);
 }
+// 或者是这样的
+function functionname(){
+    // 执行代码
+}
 ```
 
 上面的代码命名了一个 `print` 函数，以后使用 `print()` 这种形式，就可以调用相应的代码。这叫做函数的声明（Function Declaration）。
@@ -166,3 +170,417 @@ a(add)(1, 1)
 // 2
 ```
 
+### 函数名的提升
+
+JavaScript 引擎将函数名视同变量名，所以采用`function`命令声明函数时，整个函数会像变量声明一样，被提升到代码头部（函数声明整体提升）。所以，下面的代码不会报错。
+
+```javascript
+f();
+
+function f() {}
+```
+
+表面上，上面代码好像在声明之前就调用了函数`f`。但是实际上，由于“变量提升”，函数`f`被提升到了代码头部，也就是在调用之前已经声明了（变量 声明提升）。但是，如果采用赋值语句（函数表达式）定义函数，JavaScript 就会报错。
+
+```javascript
+f();
+var f = function (){};
+// TypeError: undefined is not a function
+```
+
+上面的代码等同于下面的形式。
+
+```
+var f;
+f();
+f = function () {};
+```
+
+上面代码第二行，调用`f`的时候，`f`只是被声明了，还没有被赋值，等于`undefined`，所以会报错。**因此，如果同时采用`function`命令和赋值语句声明同一个函数，最后总是采用赋值语句的定义。**
+
+```javascript
+var f = function () {
+  console.log('1');
+}
+
+function f() {
+  console.log('2');
+}
+
+f() // 1
+```
+
+### 不能在条件语句中声明函数
+
+根据 ES5 的规范，不得在非函数的代码块中声明函数，最常见的情况就是`if`和`try`语句。
+
+```javascript
+if (foo) {
+  function x() {}
+}
+
+try {
+  function x() {}
+} catch(e) {
+  console.log(e);
+}
+```
+
+上面代码分别在`if`代码块和`try`代码块中声明了两个函数，按照语言规范，这是不合法的。但是，实际情况是各家浏览器往往并不报错，能够运行。
+
+但是由于存在函数名的提升，所以在条件语句中声明函数，可能是无效的，这是非常容易出错的地方。
+
+```javascript
+if (false) {
+  function f() {}
+}
+
+f() // 不报错
+```
+
+上面代码的原始意图是不声明函数`f`，但是由于`f`的提升，导致`if`语句无效，所以上面的代码不会报错。要达到在条件语句中定义函数的目的，只有使用函数表达式。
+
+```javascript
+if (false) {
+  var f = function () {};
+}
+
+f() // undefined
+```
+
+## 函数的属性和方法
+
+### name 属性
+
+函数的`name`属性返回函数的名字。
+
+```javascript
+function f1() {}
+f1.name // "f1"
+```
+
+如果是通过变量赋值定义的函数，那么`name`属性返回变量名。
+
+```javascript
+var f2 = function () {};
+f2.name // "f2"
+```
+
+但是，上面这种情况，只有在变量的值是一个匿名函数时才是如此。如果变量的值是一个具名函数，那么`name`属性返回`function`关键字之后的那个函数名。
+
+```javascript
+var f3 = function myName() {};
+f3.name // 'myName'
+```
+
+上面代码中，`f3.name`返回函数表达式的名字。注意，真正的函数名还是`f3`，而`myName`这个名字只在函数体内部可用。
+
+`name`属性的一个用处，就是获取参数函数的名字。
+
+```javascript
+var myFunc = function () {};
+
+function test(f) {
+  console.log(f.name);
+}
+
+test(myFunc) // myFunc
+```
+
+上面代码中，函数`test`内部通过`name`属性，就可以知道传入的参数是什么函数。
+
+### length 属性
+
+函数的`length`属性返回函数预期传入的参数个数，即函数定义之中的参数个数。
+
+```javascript
+function f(a, b) {}
+f.length // 2
+```
+
+上面代码定义了空函数`f`，它的`length`属性就是定义时的参数个数。不管调用时输入了多少个参数，`length`属性始终等于2。
+
+`length`属性提供了一种机制，判断定义时和调用时参数的差异，以便实现面向对象编程的”方法重载“（overload）。
+
+### [toString()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Function/toString)
+
+函数的`toString`方法返回一个字符串，内容是函数的源码。
+
+```javascript
+function f() {
+  a();
+  b();
+  c();
+}
+
+f.toString()
+// function f() {
+//  a();
+//  b();
+//  c();
+// }
+```
+
+函数内部的注释也可以返回。
+
+```javascript
+function f() {/*
+  这是一个
+  多行注释
+*/}
+
+f.toString()
+// "function f(){/*
+//   这是一个
+//   多行注释
+// */}"
+```
+
+利用这一点，可以变相实现多行字符串。
+
+```javascript
+var multiline = function (fn) {
+  var arr = fn.toString().split('\n');
+  return arr.slice(1, arr.length - 1).join('\n');
+};
+
+function f() {/*
+  这是一个
+  多行注释
+*/}
+
+multiline(f);
+// " 这是一个
+//   多行注释"
+```
+
+## 函数作用域
+
+### 定义
+
+作用域（scope）指的是变量存在的范围。在 ES5 的规范中，Javascript 只有两种作用域：一种是全局作用域，变量在整个程序中一直存在，所有地方都可以读取；另一种是函数作用域，变量只在函数内部存在。ES6 又新增了块级作用域，本教程不涉及。
+
+**函数外部声明的变量就是全局变量（global variable），它可以在函数内部读取。**
+
+```javascript
+var v = 1;
+
+function f() {
+  console.log(v);
+}
+
+f()
+// 1
+```
+
+上面的代码表明，函数`f`内部可以读取全局变量`v`。
+
+**在函数内部定义的变量，外部无法读取，称为“局部变量”（local variable）。**
+
+```javascript
+function f(){
+  var v = 1;
+}
+
+v // ReferenceError: v is not defined
+```
+
+上面代码中，变量`v`在函数内部定义，所以是一个局部变量，函数之外就无法读取。
+
+函数内部定义的变量，会在该作用域内覆盖同名全局变量。
+
+```javascript
+var v = 1;
+
+function f(){
+  var v = 2;
+  console.log(v);
+}
+
+f() // 2
+v // 1
+```
+
+上面代码中，变量`v`同时在函数的外部和内部有定义。结果，在函数内部定义，局部变量`v`覆盖了全局变量`v`。
+
+⚠注意，对于`var`命令来说，局部变量只能在函数内部声明，在其他区块中声明，一律都是全局变量。
+
+```javascript
+if (true) {
+  var x = 5;
+}
+console.log(x);  // 5
+```
+
+上面代码中，变量`x`在条件判断区块之中声明，结果就是一个全局变量，可以在区块之外读取。
+
+### 函数内部的变量提升
+
+与全局作用域一样，函数作用域内部也会产生“变量提升”现象。`var`命令声明的变量，不管在什么位置，变量声明都会被提升到函数体的头部。
+
+```javascript
+function foo(x) {
+  if (x > 100) {
+    var tmp = x - 100;
+  }
+}
+
+// 等同于
+function foo(x) {
+  var tmp;
+  if (x > 100) {
+    tmp = x - 100;
+  };
+}
+```
+
+### 函数本身的作用域
+
+函数本身也是一个值，也有自己的作用域。它的作用域与变量一样，就是其声明时所在的作用域，与其运行时所在的作用域无关。
+
+```javascript
+var a = 1;
+var x = function () {
+  console.log(a);
+};
+
+function f() {
+  var a = 2;
+  x();
+}
+
+f() // 1
+```
+
+上面代码中，函数`x`是在函数`f`的外部声明的，所以它的作用域绑定外层，内部变量`a`不会到函数`f`体内取值，所以输出`1`，而不是`2`。
+
+总之，函数执行时所在的作用域，是定义时的作用域，而不是调用时所在的作用域。
+
+很容易犯错的一点是，如果函数`A`调用函数`B`，却没考虑到函数`B`不会引用函数`A`的内部变量。
+
+```javascript
+var x = function () {
+  console.log(a);
+};
+
+function y(f) {
+  var a = 2;
+  f();
+}
+
+y(x)
+// ReferenceError: a is not defined
+```
+
+上面代码将函数`x`作为参数，传入函数`y`。但是，函数`x`是在函数`y`体外声明的，作用域绑定外层，因此找不到函数`y`的内部变量`a`，导致报错。
+
+同样的，函数体内部声明的函数，作用域绑定函数体内部。
+
+```javascript
+function foo() {
+  var x = 1;
+  function bar() {
+    console.log(x);
+  }
+  return bar;
+}
+
+var x = 2;
+var f = foo();
+f() // 1
+```
+
+上面代码中，函数`foo`内部声明了一个函数`bar`，`bar`的作用域绑定`foo`。当我们在`foo`外部取出`bar`执行时，变量`x`指向的是`foo`内部的`x`，而不是`foo`外部的`x`。正是这种机制，构成了下文要讲解的“闭包”现象。
+
+## 参数
+
+### 概述
+
+函数运行的时候，有时需要提供外部数据，不同的外部数据会得到不同的结果，这种外部数据就叫参数。
+
+```javascript
+function square(x) {
+  return x * x;
+}
+
+square(2) // 4
+square(3) // 9
+```
+
+上式的`x`就是`square`函数的参数。每次运行的时候，需要提供这个值，否则得不到结果。
+
+### 参数的省略
+
+```javascript
+function f(a, b) {
+  return a;
+}
+
+f(1, 2, 3) // 1
+f(1) // 1
+f() // undefined
+
+f.length // 2
+```
+
+上面代码的函数`f`定义了两个参数，但是运行时无论提供多少个参数（或者不提供参数），JavaScript 都不会报错。省略的参数的值就变为`undefined`。需要注意的是，函数的`length`属性与实际传入的参数个数无关，只反映函数预期传入的参数个数。
+
+但是，没有办法只省略靠前的参数，而保留靠后的参数。如果一定要省略靠前的参数，只有显式传入`undefined`。
+
+```javascript
+function f(a, b) {
+  return a;
+}
+
+f( , 1) // SyntaxError: Unexpected token ,(…)
+f(undefined, 1) // undefined
+```
+
+上面代码中，如果省略第一个参数，就会报错。
+
+### 传递方式
+
+函数参数如果是原始类型的值（数值、字符串、布尔值），传递方式是传值传递（passes by value）。这意味着，在函数体内修改参数值，不会影响到函数外部。
+
+```javascript
+var p = 2;
+
+function f(p) {
+  p = 3;
+}
+f(p);
+
+p // 2
+```
+
+上面代码中，变量`p`是一个原始类型的值，传入函数`f`的方式是传值传递。因此，在函数内部，`p`的值是原始值的拷贝，无论怎么修改，都不会影响到原始值。
+
+但是，如果函数参数是复合类型的值（数组、对象、其他函数），传递方式是传址传递（pass by reference）。也就是说，传入函数的原始值的地址，因此在函数内部修改参数，将会影响到原始值。
+
+```javascript
+var obj = { p: 1 };
+
+function f(o) {
+  o.p = 2;
+}
+f(obj);
+
+obj.p // 2
+```
+
+上面代码中，传入函数`f`的是参数对象`obj`的地址。因此，在函数内部修改`obj`的属性`p`，会影响到原始值。
+
+注意，如果函数内部修改的，不是参数对象的某个属性，而是替换掉整个参数，这时不会影响到原始值。
+
+```javascript
+var obj = [1, 2, 3];
+
+function f(o) {
+  o = [2, 3, 4];
+}
+f(obj);
+
+obj // [1, 2, 3]
+```
+
+上面代码中，在函数`f`内部，参数对象`obj`被整个替换成另一个值。这时不会影响到原始值。这是因为，形式参数（`o`）的值实际是参数`obj`的地址，重新对`o`赋值导致`o`指向另一个地址，保存在原地址上的值当然不受影响。
