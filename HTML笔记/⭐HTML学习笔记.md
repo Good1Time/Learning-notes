@@ -1,6 +1,70 @@
 # HTML（超文本标记语言）
-
-[TOC]
+- [HTML（超文本标记语言）](#html超文本标记语言)
+  - [行级元素](#行级元素)
+  - [块级元素](#块级元素)
+  - [行级块元素](#行级块元素)
+  - [HTML 编码（字符集）](#html-编码字符集)
+  - [HTML 字符实体](#html-字符实体)
+- [元数据脚本](#元数据脚本)
+  - [title 元素-全局属性](#title-元素-全局属性)
+  - [mate 元素](#mate-元素)
+- [分组内容](#分组内容)
+  - [div 元素](#div-元素)
+  - [ol 元素](#ol-元素)
+  - [ul 元素](#ul-元素)
+  - [li 元素](#li-元素)
+- [文档 块](#文档-块)
+  - [address 元素](#address-元素)
+- [文本语义](#文本语义)
+  - [span 元素](#span-元素)
+  - [strong 元素](#strong-元素)
+  - [em 元素](#em-元素)
+  - [del 元素](#del-元素)
+- [嵌入内容](#嵌入内容)
+  - [img 元素 未学完](#img-元素-未学完)
+- [表单元素](#表单元素)
+  - [form 元素 还没学懂!](#form-元素-还没学懂)
+  - [select 元素](#select-元素)
+  - [option 元素](#option-元素)
+  - [input 元素](#input-元素)
+      - [做成表格](#做成表格)
+- [分割线分割线分割线分割线分割线分割线分割线分割线分割线分割线分割线分割线分割线分割线分割线](#分割线分割线分割线分割线分割线分割线分割线分割线分割线分割线分割线分割线分割线分割线分割线)
+  - [iframe 元素](#iframe-元素)
+  - [在页面中使用flash](#在页面中使用flash)
+    - [object 元素](#object-元素)
+    - [param 元素](#param-元素)
+    - [embed 元素](#embed-元素)
+  - [其他](#其他)
+- [表单元素](#表单元素-1)
+  - [4. optgroup 元素](#4-optgroup-元素)
+  - [5. textarea 元素](#5-textarea-元素)
+- [配合表单元素](#配合表单元素)
+  - [1. label 元素](#1-label-元素)
+  - [2. datalist 元素](#2-datalist-元素)
+  - [4. fieldset 元素](#4-fieldset-元素)
+  - [5. legend 元素](#5-legend-元素)
+- [表格元素](#表格元素)
+  - [1.tabel 元素](#1tabel-元素)
+  - [2.caption 元素](#2caption-元素)
+  - [3.colgroup 元素(未学)](#3colgroup-元素未学)
+  - [4.col 元素(未学)](#4col-元素未学)
+  - [5.tbead 元素](#5tbead-元素)
+  - [6.tbody 元素](#6tbody-元素)
+  - [7.tfoot 元素](#7tfoot-元素)
+  - [8.tr 元素](#8tr-元素)
+  - [9.th 元素](#9th-元素)
+  - [10.td 元素](#10td-元素)
+- [其他元素](#其他元素)
+  - [abbr 元素](#abbr-元素)
+  - [time 元素](#time-元素)
+  - [b 元素](#b-元素)
+  - [q 元素](#q-元素)
+  - [figure 元素 为学习](#figure-元素-为学习)
+  - [blockquote 元素](#blockquote-元素)
+  - [figcaption 元素(未学)](#figcaption-元素未学)
+  - [br 元素](#br-元素)
+  - [hr 元素](#hr-元素)
+  - [link 元素](#link-元素)
 
 ## [行级元素](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Inline_elements)
 
@@ -31,16 +95,6 @@
 可以通过 css 改变宽高
 
 凡是带有文本属性(`inline`)  的元素,都有文字特性 ,有文字特性就会被分割(间隔了4像素)
-
-# 根元素
-
-## [html 元素 未学完](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/html)
-
-应用:表示一个 HTML 文档的根（顶级元素），所以它也被称为*根元素*。所有其他元素必须是此元素的后代。
-
-允许的内容:一个 <head> 元素，后跟一个 <body> 元素
-
-严格意义上，**标签**是指开始标签（例如 <p> 标签）或结束标签（例如 </p> 标签）；**元素**（例如 p 元素或者称为`<p>`元素）则包括开始标签（自然也包括标签中定义的属性）、结束标签以及中间的内容（`Content`）。
 
 ## [HTML 编码（字符集）](https://www.w3school.com.cn/html/html_charset.asp)
 
@@ -108,12 +162,6 @@ HTML5 中的默认字符编码为 UTF-8。
 
 **⚠警告:<div> 元素应当仅在没有任何其它语义元素（比如 <article> 或 <nav>）可用时使用。**
 
-## [p 元素](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/p)
-
-应用:表示文本的一个段落。该元素通常表现为一整块与相邻文本分离的文本，或以垂直的空白隔离或以首行缩进。另外，<p> 是[块级元素](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Block-level_elements)。
-
-> 使用CSS margin属性去改变段落之间的间隙，不要在段落之间插入空的段落元素或者<br>元素。
-
 ## [ol 元素](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/ol)
 
 应用:表示有序列表，通常渲染为一个带编号的列表。
@@ -170,20 +218,6 @@ value 属性;这个整数型属性表明了本 <li> 元素在有序列表（由 
 
 # 文档 块
 
-## [h1~h6 元素](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/Heading_Elements)
-
-应用:HTML <h1>–<h6> 标题 (Heading) 元素呈现了六个不同的级别的标题，<h1> 级别最高，而 <h6> 级别最低。
-
-**使用说明:**
-
-- 用户代理可以使用标题信息，例如自动构建文档的目录。
-
-- 不要为了减小标题的字体而使用低级别的标题，而是使用 CSS font-size 属性。
-
-- 避免跳过某级标题：始终要从 <h1> 开始，接下来依次使用 <h2> 等等。
-
-- ⭐使用 <section> 元素时，为了方便起见，你应该考虑避免在同一个页面上重复使用 <h1>，<h1> 应被用于表示页面的标题，其他的标题当从 <h2> 开始。在使用 section 时，应当为每个 section 都使用一个 <h2>。
-
 ## [address 元素](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/address)
 
 应用:提供了某个人或某个组织（等等）的联系信息。
@@ -198,27 +232,6 @@ value 属性;这个整数型属性表明了本 <li> 元素在有序列表（由 
 -  <address> 可以使用在多种语境中，例如在文章开头提供商务的联系方式，或者放在<article>元素内，指明该文章的作者。
 
 # 文本语义
-
-## [a 元素 未学完](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/a)
-
-应用:通过它的 href 属性创建通向其他网页、文件、同一页面内的位置、电子邮件地址或任何其他 URL 的超链接。<a> 中的内容应该应该指明链接的意图。如果存在 href 属性，当 <a> 元素聚焦时按下回车键就会激活它。
-
-创建一个 email 链接:`<a href="mailto:nowhere@mozilla.org">Send email to nowhere</a>`
-
-创建电话链接:`<a href="tel:+491570156">+49 157 0156</a>`
-
-href 属性:包含超链接指向的 URL 或 URL 片段。URL 片段是哈希标记（#）前面的名称，哈希标记指定当前文档中的内部目标位置（HTML 元素的 ID）。URL 不限于基于 Web（HTTP）的文档，也可以使用浏览器支持的任何协议。
-
->  可以使用 href="#top" 或者 href="#" 链接返回到页面顶部。这种行为是 HTML5 的特性
-
-target 属性:
-该属性指定在何处显示链接的资源。取值为标签（tab），窗口（window），或框架（iframe）等浏览上下文的名称或其他关键词。以下关键字具有特殊的意义：
-
-`_self` : 当前页面加载，即当前的响应到同一 HTML 4 frame（或 HTML5 浏览上下文）。此值是默认的，如果没有指定属性的话。
-`_blank` : 新窗口打开，即到一个新的未命名的 HTML4 窗口或 HTML5 浏览器上下文
-`_parent` : 加载响应到当前框架的 HTML4 父框架或当前的 HTML5 浏览上下文的父浏览上下文。如果没有 parent 框架或者浏览上下文，此选项的行为方式与 ` _self ` 相同。
-`_top` : IHTML4 中：加载的响应成完整的，原来的窗口，取消所有其它 frame。HTML5 中：加载响应进入顶层浏览上下文（即，浏览上下文，它是当前的一个的祖先，并且没有 parent）。如果没有 parent 框架或者浏览上下文，此选项的行为方式相同`_self`
-备注： 在 <a> 元素上使用 target="_blank" 隐式提供了与使用 rel="noopener" (en-US) 相同的 rel 行为，即不会设置 window.opener。
 
 ## [span 元素](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/span)
 
@@ -560,27 +573,6 @@ label 属性:选项组的名字，浏览器用以在用户界面中标记选项�
 cols 属性:文本域的可视宽度。横向上有多少个文字。
 
 rows 属性:元素的输入文本的行数（显示的高度）。
-
-## 6. [button 元素](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/button)
-
-应用:表示一个可点击的按钮。
-
-    <button type=""></button>  
-type 属性:reset、submit、button，默认值 submit。
-
-- reset: 此按钮重置所有组件为初始值。
-  
-- submit: 此按钮将表单数据提交给服务器。如果未指定属性，或者属性动态更改为空值或无效值，则此值为**默认值**。
-
-- button: 此按钮没有默认行为。它可以有与元素事件相关的客户端脚本，当事件出现时可触发。
-
-- menu: 此按钮打开一个由指定 `<menu>` 元素进行定义的弹出菜单。
-
-## 表单状态
-
-readonly属性：布尔属性，是否只读，不会改变表单显示样式
-
-disabled属性：布尔属性，是否禁用，会改变表单显示样式
 
 # 配合表单元素
 

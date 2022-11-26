@@ -1,4 +1,4 @@
-*来自*[《JavaScript 标准参考教程（alpha）》](https://javascript.ruanyifeng.com/)，*by 阮一峰*（存在部分删减）
+*来自*[《JavaScript 标准参考教程（alpha）》](https://javascript.ruanyifeng.com/)，*by 阮一峰*（存在部分修改）
 
 # 函数 function
 
