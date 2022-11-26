@@ -1,4 +1,6 @@
-*来自*[《JavaScript 标准参考教程（alpha）》](https://javascript.ruanyifeng.com/)，*by 阮一峰*
+*来自*[《JavaScript 标准参考教程（alpha）》](https://javascript.ruanyifeng.com/)，*by 阮一峰*（存在部分删减）
+
+[TOC]
 
 # 函数 function
 
@@ -584,3 +586,416 @@ obj // [1, 2, 3]
 ```
 
 上面代码中，在函数`f`内部，参数对象`obj`被整个替换成另一个值。这时不会影响到原始值。这是因为，形式参数（`o`）的值实际是参数`obj`的地址，重新对`o`赋值导致`o`指向另一个地址，保存在原地址上的值当然不受影响。
+
+### 同名参数
+
+如果有同名的参数，则取最后出现的那个值。
+
+```javascript
+function f(a, a) {
+  console.log(a);
+}
+
+f(1, 2) // 2
+```
+
+上面代码中，函数`f`有两个参数，且参数名都是`a`。取值的时候，以后面的`a`为准，即使后面的`a`没有值或被省略，也是以其为准。
+
+```javascript
+function f(a, a) {
+  console.log(a);
+}
+
+f(1) // undefined
+```
+
+调用函数`f`的时候，没有提供第二个参数，`a`的取值就变成了`undefined`。这时，如果要获得第一个`a`的值，可以使用`arguments`对象。
+
+```javascript
+function f(a, a) {
+  console.log(arguments[0]);
+}
+
+f(1) // 1
+```
+
+### arguments 对象
+
+#### 定义
+
+由于 JavaScript 允许函数有不定数目的参数，所以需要一种机制，可以在函数体内部读取所有参数。这就是`arguments`对象的由来。
+
+`arguments`对象包含了函数运行时的所有参数，`arguments[0]`就是第一个参数，`arguments[1]`就是第二个参数，以此类推。这个对象只有在函数体内部，才可以使用。
+
+```javascript
+var f = function (one) {
+  console.log(arguments[0]);
+  console.log(arguments[1]);
+  console.log(arguments[2]);
+}
+
+f(1, 2, 3)
+// 1
+// 2
+// 3
+```
+
+```javascript
+var f = function(a, b) {
+  arguments[0] = 3;
+  arguments[1] = 2;
+  return a + b;
+}
+
+f(1, 1) // 5
+```
+
+上面代码中，函数`f`调用时传入的参数，在函数内部被修改成`3`和`2`。
+
+严格模式下，`arguments`对象是一个只读对象，修改它是无效的，但不会报错。
+
+```javascript
+var f = function(a, b) {
+  'use strict'; // 开启严格模式
+  arguments[0] = 3; // 无效
+  arguments[1] = 2; // 无效
+  return a + b;
+}
+
+f(1, 1) // 2
+```
+
+上面代码中，函数体内是严格模式，这时修改`arguments`对象就是无效的。
+
+通过`arguments`对象的`length`属性，可以判断函数调用时到底带几个参数。
+
+```javascript
+function f() {
+  return arguments.length;
+}
+
+f(1, 2, 3) // 3
+f(1) // 1
+f() // 0
+```
+
+### 与数组的关系
+
+需要注意的是，虽然`arguments`很像数组，但它是一个对象。数组专有的方法（比如`slice`和`forEach`），不能在`arguments`对象上直接使用。
+
+如果要让`arguments`对象使用数组方法，真正的解决方法是将`arguments`转为真正的数组。下面是两种常用的转换方法：`slice`方法和逐一填入新数组。
+
+```javascript
+var args = Array.prototype.slice.call(arguments);
+
+// 或者
+var args = [];
+for (var i = 0; i < arguments.length; i++) {
+  args.push(arguments[i]);
+}
+```
+
+### callee 属性
+
+`arguments`对象带有一个`callee`属性，返回它所对应的原函数。
+
+```javascript
+var f = function () {
+  console.log(arguments.callee === f);
+}
+
+f() // true
+```
+
+可以通过`arguments.callee`，达到调用函数自身的目的。这个属性在严格模式里面是禁用的，因此不建议使用。
+
+## 函数的其他知识点
+
+### 闭包
+
+闭包（closure）是 Javascript 语言的一个难点，也是它的特色，很多高级应用都要依靠闭包实现。
+
+理解闭包，首先必须理解变量作用域。前面提到，JavaScript 有两种作用域：全局作用域和函数作用域。函数内部可以直接读取全局变量。
+
+```javascript
+var n = 999;
+
+function f1() {
+  console.log(n);
+}
+f1() // 999
+```
+
+上面代码中，函数`f1`可以读取全局变量`n`。
+
+但是，函数外部无法读取函数内部声明的变量。
+
+```javascript
+function f1() {
+  var n = 999;
+}
+
+console.log(n)
+// Uncaught ReferenceError: n is not defined
+```
+
+上面代码中，函数`f1`内部声明的变量`n`，函数外是无法读取的。
+
+如果出于种种原因，需要得到函数内的局部变量。正常情况下，这是办不到的，只有通过变通方法才能实现。那就是在函数的内部，再定义一个函数。
+
+```javascript
+function f1() {
+  var n = 999;
+  function f2() {
+　　console.log(n); // 999
+  }
+}
+```
+
+上面代码中，函数`f2`就在函数`f1`内部，这时`f1`内部的所有局部变量，对`f2`都是可见的。但是反过来就不行，`f2`内部的局部变量，对`f1`就是不可见的。这就是 JavaScript 语言特有的”链式作用域”结构（chain scope），子对象会一级一级地向上寻找所有父对象的变量。所以，父对象的所有变量，对子对象都是可见的，反之则不成立。既然`f2`可以读取`f1`的局部变量，那么只要把`f2`作为返回值，我们不就可以在`f1`外部读取它的内部变量了吗！
+
+```javascript
+function f1() {
+  var n = 999;
+  function f2() {
+    console.log(n);
+  }
+  return f2;
+}
+
+var result = f1();
+result(); // 999
+```
+
+上面代码中，函数`f1`的返回值就是函数`f2`，由于`f2`可以读取`f1`的内部变量，所以就可以在外部获得`f1`的内部变量了。
+
+闭包就是函数`f2`，即能够读取其他函数内部变量的函数。由于在 JavaScript 语言中，只有函数内部的子函数才能读取内部变量，因此可以把闭包简单理解成“定义在一个函数内部的函数”。闭包最大的特点，就是它可以“记住”诞生的环境，比如`f2`记住了它诞生的环境`f1`，所以从`f2`可以得到`f1`的内部变量。在本质上，闭包就是将函数内部和函数外部连接起来的一座桥梁。
+
+闭包的最大用处有两个，一个是可以读取函数内部的变量，另一个就是让这些变量始终保持在内存中，即闭包可以使得它诞生环境一直存在。请看下面的例子，闭包使得内部变量记住上一次调用时的运算结果。
+
+```javascript
+function createIncrementor(start) {
+  return function () {
+    return start++;
+  };
+}
+
+var inc = createIncrementor(5);
+
+inc() // 5
+inc() // 6
+inc() // 7
+```
+
+上面代码中，`start`是函数`createIncrementor`的内部变量。通过闭包，`start`的状态被保留了，每一次调用都是在上一次调用的基础上进行计算。从中可以看到，闭包`inc`使得函数`createIncrementor`的内部环境，一直存在。所以，闭包可以看作是函数内部作用域的一个接口。
+
+为什么会这样呢？原因就在于`inc`始终在内存中，而`inc`的存在依赖于`createIncrementor`，因此也始终在内存中，不会在调用结束后，被垃圾回收机制回收。
+
+```javascript
+function Person(name) {
+  var _age;
+  function setAge(n) {
+    _age = n;
+  }
+  function getAge() {
+    return _age;
+  }
+
+  return {
+    name: name,
+    getAge: getAge,
+    setAge: setAge
+  };
+}
+
+var p1 = Person('张三');
+p1.setAge(25);
+p1.getAge() // 25
+```
+
+上面代码中，函数`Person`的内部变量`_age`，通过闭包`getAge`和`setAge`，变成了返回对象`p1`的私有变量。
+
+注意，外层函数每次运行，都会生成一个新的闭包，而这个闭包又会保留外层函数的内部变量，所以内存消耗很大。因此不能滥用闭包，否则会造成网页的性能问题。
+
+### 立即调用的函数表达式（IIFE）
+
+在 Javascript 中，圆括号`()`是一种运算符，跟在函数名之后，表示调用该函数。比如，`print()`就表示调用`print`函数。
+
+有时，我们需要在定义函数之后，立即调用该函数。这时，你不能在函数的定义之后加上圆括号，这会产生语法错误。
+
+```javascript
+function(){ /* code */ }();
+// SyntaxError: Unexpected token (
+```
+
+产生这个错误的原因是，`function`这个关键字既可以当作语句，也可以当作表达式。
+
+```javascript
+// 语句
+function f() {}
+
+// 表达式
+var f = function f() {}
+```
+
+为了避免解析上的歧义，JavaScript 引擎规定，如果`function`关键字出现在行首，一律解释成语句。因此，JavaScript引擎看到行首是`function`关键字之后，认为这一段都是函数的定义，不应该以圆括号结尾，所以就报错了。
+
+解决方法就是不要让`function`出现在行首，让引擎将其理解成一个表达式。最简单的处理，就是将其放在一个圆括号里面。
+
+```javascript
+(function(){ /* code */ }());
+// 或者
+(function(){ /* code */ })();
+```
+
+上面两种写法都是以圆括号开头，引擎就会认为后面跟的是一个表示式，而不是函数定义语句，所以就避免了错误。这就叫做“立即调用的函数表达式”（Immediately-Invoked Function Expression），简称 IIFE。
+
+注意，上面两种写法最后的分号都是必须的。如果省略分号，遇到连着两个 IIFE，可能就会报错。
+
+```javascript
+// 报错
+(function(){ /* code */ }())
+(function(){ /* code */ }())
+```
+
+上面代码的两行之间没有分号，JavaScript 会将它们连在一起解释，将第二行解释为第一行的参数。
+
+推而广之，任何让解释器以表达式来处理函数定义的方法，都能产生同样的效果，比如下面三种写法。
+
+```javascript
+var i = function(){ return 10; }();
+true && function(){ /* code */ }();
+0, function(){ /* code */ }();
+```
+
+甚至像下面这样写，也是可以的。
+
+```javascript
+!function () { /* code */ }();
+~function () { /* code */ }();
+-function () { /* code */ }();
++function () { /* code */ }();
+```
+
+通常情况下，只对匿名函数使用这种“立即执行的函数表达式”。它的目的有两个：一是不必为函数命名，避免了污染全局变量；二是 IIFE 内部形成了一个单独的作用域，可以封装一些外部无法读取的私有变量。
+
+```javascript
+// 写法一
+var tmp = newData;
+processData(tmp);
+storeData(tmp);
+
+// 写法二
+(function () {
+  var tmp = newData;
+  processData(tmp);
+  storeData(tmp);
+}());
+```
+
+上面代码中，写法二比写法一更好，因为完全避免了污染全局变量。
+
+## eval 命令(没学明白)
+
+`eval`命令的作用是，将字符串当作语句执行。
+
+```javascript
+eval('var a = 1;');
+a // 1
+```
+
+上面代码将字符串当作语句运行，生成了变量`a`。
+
+放在`eval`中的字符串，应该有独自存在的意义，不能用来与`eval`以外的命令配合使用。举例来说，下面的代码将会报错。
+
+```javascript
+eval('return;');
+```
+
+`eval`没有自己的作用域，都在当前作用域内执行，因此可能会修改当前作用域的变量的值，造成安全问题。
+
+```javascript
+var a = 1;
+eval('a = 2');
+
+a // 2
+```
+
+上面代码中，`eval`命令修改了外部变量`a`的值。由于这个原因，`eval`有安全风险。
+
+为了防止这种风险，JavaScript 规定，如果使用严格模式，`eval`内部声明的变量，不会影响到外部作用域。
+
+```javascript
+(function f() {
+  'use strict';
+  eval('var foo = 123');
+  console.log(foo);  // ReferenceError: foo is not defined
+})()
+```
+
+上面代码中，函数`f`内部是严格模式，这时`eval`内部声明的`foo`变量，就不会影响到外部。
+
+不过，即使在严格模式下，`eval`依然可以读写当前作用域的变量。
+
+```javascript
+(function f() {
+  'use strict';
+  var foo = 1;
+  eval('foo = 2');
+  console.log(foo);  // 2
+})()
+```
+
+上面代码中，严格模式下，`eval`内部还是改写了外部变量，可见安全风险依然存在。
+
+此外，`eval`的命令字符串不会得到 JavaScript 引擎的优化，运行速度较慢。这也是一个不应该使用它的理由。
+
+通常情况下，`eval`最常见的场合是解析 JSON 数据字符串，不过正确的做法应该是使用浏览器提供的`JSON.parse`方法。
+
+JavaScript 引擎内部，`eval`实际上是一个引用，默认调用一个内部方法。这使得`eval`的使用分成两种情况，一种是像上面这样的调用`eval(expression)`，这叫做“直接使用”，这种情况下`eval`的作用域就是当前作用域。除此之外的调用方法，都叫“间接调用”，此时`eval`的作用域总是全局作用域。
+
+```javascript
+var a = 1;
+
+function f() {
+  var a = 2;
+  var e = eval;
+  e('console.log(a)');
+}
+
+f() // 1
+```
+
+上面代码中，`eval`是间接调用，所以即使它是在函数中，它的作用域还是全局作用域，因此输出的`a`为全局变量。
+
+`eval`的间接调用的形式五花八门，只要不是直接调用，都属于间接调用。
+
+```javascript
+eval.call(null, '...')
+window.eval('...')
+(1, eval)('...')
+(eval, eval)('...')
+```
+
+上面这些形式都是`eval`的间接调用，因此它们的作用域都是全局作用域。
+
+与`eval`作用类似的还有`Function`构造函数。利用它生成一个函数，然后调用该函数，也能将字符串当作命令执行。
+
+```javascript
+var jsonp = 'foo({"id": 42})';
+
+var f = new Function( 'foo', jsonp );
+// 相当于定义了如下函数
+// function f(foo) {
+//   foo({"id":42});
+// }
+
+f(function (json) {
+  console.log( json.id ); // 42
+})
+```
+
+上面代码中，`jsonp`是一个字符串，`Function`构造函数将这个字符串，变成了函数体。调用该函数的时候，`jsonp`就会执行。这种写法的实质是将代码放到函数作用域执行，避免对全局作用域造成影响。
+
+不过，`new Function()`的写法也可以读写全局作用域，所以也是应该避免使用它。
+
