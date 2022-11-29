@@ -10,9 +10,6 @@
   - [mate 元素](#mate-元素)
 - [分组内容](#分组内容)
   - [div 元素](#div-元素)
-  - [ol 元素](#ol-元素)
-  - [ul 元素](#ul-元素)
-  - [li 元素](#li-元素)
 - [文档 块](#文档-块)
   - [address 元素](#address-元素)
 - [文本语义](#文本语义)
@@ -58,11 +55,9 @@
   - [abbr 元素](#abbr-元素)
   - [time 元素](#time-元素)
   - [b 元素](#b-元素)
-  - [q 元素](#q-元素)
   - [figure 元素 为学习](#figure-元素-为学习)
   - [blockquote 元素](#blockquote-元素)
   - [figcaption 元素(未学)](#figcaption-元素未学)
-  - [br 元素](#br-元素)
   - [hr 元素](#hr-元素)
   - [link 元素](#link-元素)
 
@@ -161,60 +156,6 @@ HTML5 中的默认字符编码为 UTF-8。
 应用:是一个通用型的流内容容器，在不使用CSS的情况下，其对内容或布局没有任何影响。
 
 **⚠警告:<div> 元素应当仅在没有任何其它语义元素（比如 <article> 或 <nav>）可用时使用。**
-
-## [ol 元素](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/ol)
-
-应用:表示有序列表，通常渲染为一个带编号的列表。
-
-reversed 属性;此布尔值属性指定列表中的条目是否是倒序排列的，即编号是否应从高到低反向标注
-
-[**`start`**](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/ol#attr-start) 属性;一个整数值属性，**指定了列表编号的起始值**。此属性的值应为阿拉伯数字，尽管列表条目的编号类型 `type` 属性可能指定为了罗马数字编号等其他类型的编号。比如说，想要让元素的编号从英文字母 "d" 或者罗马数字 "iv" 开始，都应当使用 `start="4"`。
-
-type 属性;设置编号的类型：
-
-- `a` 表示小写英文字母编号
-- `A` 表示大写英文字母编号
-- `i` 表示小写罗马数字编号
-- `I` 表示大写罗马数字编号
-- 1 表示数字编号（默认）编号类型适用于整个列表，除非在 <ol> 元素的 <li> 元素中使用不同的 type 属性。
-
-## [ul 元素](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/ul)
-
-应用:表示一个内可含多个元素的无序列表或项目符号列表。
-
-[**`type`**](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/ul#attr-type) 属性;已弃用
-
-用于设置列表的着重号样式，被定义在 [HTML3.2](https://developer.mozilla.org/zh-CN/HTML3.2) 和过渡版本 [HTML 4.0/4.01](https://developer.mozilla.org/zh-CN/HTML4.01) 中的可用值有：
-
-- `circle`
-
-- `disc`
-
-- `square`第四种着重号样式被定义在 WebTV 接口中，但并不是所有浏览器都支持：`triangle`如果未设置此 HTML 属性且没有 [CSS](https://developer.mozilla.org/zh-CN/docs/Web/CSS) [`list-style-type`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/list-style-type) 属性作用于这个元素，用户代理会决定使用哪种着重号样式，一般来说这也和嵌套的层级数有关。
-
-  > 不要使用这个属性，它已经被废弃了：使用 [CSS](https://developer.mozilla.org/zh-CN/docs/Web/CSS) [`list-style-type`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/list-style-type) 属性作为代替。
-
-**使用说明:**
-
-- `<ul>` 元素用来将**没有数字顺序**的一组数据进行分组，并且它们的数字顺序是没有意义的。举个例子，无序列表的列表项通常通过一个字符进行装饰，这些字符的形式可以是点，圆乃至方形．虽然这个字符没有直接在页面上定义，但是可以用与之相关的 CSS 对其进行操作，例如使用 `list-style-type` 属性。
-- 在 `<ol>` 和 `<ul>` 元素中，嵌套列表没有深度和嵌套顺序的限制。
-- **⭐`<ol>` 和 `<ul>` 元素二者都代表一组数据，不过它们彼此是有区别的，ol 元素中的顺序是有意义的。如果想确定你到底需要使用哪一个列表元素，你可以试着去改变数据的顺序。如果想表达的语义改变了，你就需要使用 ol 元素，否则你该使用 ul 元素。**
-
-> 一个功能有很多功能子项组成,每一个功能子项的功能和样式基本上是相同的只不过内容上可能有小小的差异,很多的功能子项组成了一个大功能.  使用 `ul>li` 组成,因为更符合天生的结构
-
-## [li 元素](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/li)
-
-应用:表示列表里的条目。它必须包含在一个父元素里：一个有序列表 <ol>，一个无序列表 <ul>，或者一个菜单 [<menu>](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/menu)。
-
-> 旧的规则中 `<div>` 也可以作为父元素，但是并不提倡。
-
-value 属性;这个整数型属性表明了本 <li> 元素在有序列表（由 <ol> 元素定义）中的序号。本属性值只能用数字，即使列表使用罗马数字或字母来展示。随后的列表条目会从设置的值开始计数。value 属性对于无序列表 (<ul>) 或者菜单 (<menu>) 无效。如图:
-
-![image-20221101191648905](E:\文档\Web学习\笔记\HTML笔记\imgs\image-20221101191648905.png)
-
-
-
-
 
 # 文档 块
 
@@ -830,18 +771,6 @@ TZD - 时区标识符 (Z 表示祖鲁，也称为格林威治时间)
 
 同等重要的文本做区分。
 
-## [q 元素](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/q)
-
-应用:表示一小段引用文本。对于长的文本的引用请使用 `<blockquote>` 替代。
-
-大多数现代浏览器，会为 `<q>` 文本添加引号。
-
-    <q cite="http://en.wikipedia.org/wiki/Kenny_McCormick#Cultural_impact">
-     Oh my God, you/they killed Kenny!
-    </q>
-
-cite 属性:这个属性的值是 URL，意在指出被引用的文本的源文档或者源信息。这个属性重在解释这个引用的参考或者是上下文。
-
 ## [figure 元素 为学习](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/figure)
 
 应用：
@@ -859,10 +788,6 @@ cite 属性:是一个标注引用的信息的来源文档或者相关信息的 U
 ## [figcaption 元素(未学)](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/figcaption)
 
 应用:
-
-## [br 元素](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/br)
-
-应用:在文本在换行。文本中生成一个换行（回车）符号。
 
 ## [hr 元素](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/hr)
 

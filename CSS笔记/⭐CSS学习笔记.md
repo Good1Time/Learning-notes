@@ -1,9 +1,4 @@
 # CSS（层叠样式表）， 要补一下浮动，定位和before的笔记--
-
-[TOC]
-
-
-
 # 什么是CSS
 
 CSS规则由两个主要的部分构成：选择器，以及一条或多条声明
@@ -279,30 +274,6 @@ cursor: url(hand.cur), pointer;
 
 value:0~1
 
-## [border 属性](https://developer.mozilla.org/zh-CN/docs/Web/CSS/border)
-
-应用:简写属性;用于设置一个或多个以下属性的值：`border-width` 、`border-style` 、`border-color` 。
-
-**注意: 虽然 `border-width` , `border-style` 和 `border-color` 简写属性接受最多 4 个参数来为不同的边设置宽度、风格和颜色，但`boder` 属性只接受三个参数，分别是宽度、风格和颜色，所以这样会使得四条边的边框相同。**
-
-**Borders vs. outlines**
-
-边界（`border`）和轮廓（`outline`）很相似。然而轮廓在以下方面与边界不同：
-
-- 轮廓不占据空间，他们在元素内容之外绘制。
-- 根据规范，轮廓不必为矩形，尽管通常是矩形。
-
-### [borde-radius 属性](https://developer.mozilla.org/zh-CN/docs/Web/CSS/border-radius)
-
-应用:将元素的外边框的四角圆润起来。您可以设置一个半径来制作圆角，或设置两个半径来制作椭圆角。
-
-注意:
-
-- 即使元素没有边框，圆角也可以用到 `background` 上面，具体效果受 `background-clip` 影响。
-
-- 当 `border-collapse` 的值为 `collapse` 时，`border-radius` 属性不会被应用到表格元素上。
-- **当取值设置为两个时,第一个值时水平半径,第二个值时垂直半径???**
-
 # 分割线分割线分割线分割线分割线分割线分割线分割线分割线分割线分割线分割线分割线分割线分割线分割线
 
 
@@ -353,105 +324,6 @@ linear-gradient( blue, green 40%, red);
 ##  [box-shadow 属性 未学习](https://developer.mozilla.org/zh-CN/docs/Web/CSS/box-shadow)
 
 应用：用于在元素的框架上**添加阴影效果**。你可以在同一个元素上设置多个阴影效果，并用逗号将他们分隔开。该属性可设置的值包括阴影的 X 轴偏移量、Y 轴偏移量、模糊半径、扩散半径和颜色。
-
-## [background 属性](https://developer.mozilla.org/zh-CN/docs/Web/CSS/background)
-
-应用:是一种 `CSS` 简写属性，用于一次性集中定义各种背景属性，包括 `color` , `image` , `origin` 与 `size` , `repeat` 方式等等。
-
-### [background-color 属性](https://developer.mozilla.org/zh-CN/docs/Web/CSS/background-color)
-
-应用:会设置元素的背景色，属性的值为颜色值或关键字 `transparent(透明)` 二者选其一。
-
-初始值为: `transparent(透明)`,在 CSS 中，`transparent` 是一种颜色。
-
-`transparent` 值:
-
-尽管在大多数情况下，没有必要使用 transparent。不过如果您不希望某元素拥有背景色，同时又不希望用户对	浏览器的颜色设置影响到您的设计，那么设置 transparent 值还是有必要的。
-
-#### 元素背景的范围
-
-`background-color` 属性为元素设置一种纯色。这种颜色会填充元素的内容、内边距和边框区域，扩展到元素边框的外边界（但不包括外边距）。如果边框有透明部分（如虚线边框），会透过这些透明部分显示出背景色。
-
-### background-position
-
-### [background-size 属性](https://developer.mozilla.org/zh-CN/docs/Web/CSS/background-size)
-
-应用:设置背景图片大小。图片可以保有其原有的尺寸，或者拉伸到新的尺寸，或者在保持其原有比例的同时缩放到元素的可用空间的尺寸。
-
-取值:
-
-- `<length>` 值，指定背景图片大小，不能为负值。
-
-- `<percentage>` 值，指定背景图片相对背景区（background positioning area）的百分比。背景区由 `background-origin` 设置，默认为盒模型的内容区与内边距，也可设置为只有内容区，或者还包括边框。如果 `attachment` 为 `fixed` ，背景区为浏览器可视区（即视口），不包括滚动条。不能为负值。
-
-- `auto`； 以背景图片的比例缩放背景图片。
-- `contain` ；缩放背景图片以完全装入背景区，可能背景区部分空白。`contain` 尽可能的缩放背景并保持图像的宽高比例（图像不会被压缩）。该背景图会填充所在的容器。当背景图和容器的大小的不同时，容器的空白区域（上/下或者左/右）会显示由 `background-color` 设置的背景颜色。
-
-- `cover` ；缩放背景图片以完全覆盖背景区，可能背景图片部分看不见。和  `contain` 值相反，`cover` 值尽可能大的缩放背景图像并保持图像的宽高比例（图像不会被压扁）。该背景图以它的全部宽或者高覆盖所在容器。当容器和背景图大小不同时，背景图的 左/右 或者 上/下 部分会被裁剪。
-
-#### 背景图片大小计算
-
-1. 如果指定了 `background-size` 的两个值并且不是 `auto` ：
-
-背景图片按指定大小渲染。
-
-2. `contain` 或 `cover` :
-   保留固有比例，最大的包含或覆盖背景区。如果图像没有固有比例，则按背
-   景区大小
-
-3. `auto` 或 `auto auto` :
-   图像如果有两个长度，则按这个尺寸。如果没有固有尺寸与固有比例，则按背景区的大小。如果没有固有尺寸但是有固有比例，效果同 `contain` 。如果有一个长度与比例，则由此长度与比例计算大小。如果有一个长度但是没有比例，则使用此长度与背景区相应的长度。
-
-4. 一个为 `auto` 另一个不是 `auto`:
-   如果图像有固有比例，则指定的长度使用指定值，未指定的长度由指定值与固有比例计算。如果图像没有固有比例，则指定的长度使用指定值，未指定的长度使用图像相应的固有长度，若没有固有长度，则使用背景区相应的长度。
-
-> 注意，对于没有固有尺寸或固有比例的矢量图不是所有的浏览器都支持
-
-单张图片的背景大小可以使用以下三种方法中的一种来规定：
-
-使用关键词 `contain`
-使用关键词 `cover`
-设定宽度和高度值
-当通过宽度和高度值来设定尺寸时，你可以提供一或者两个数值：
-
-如果仅有一个数值被给定，这个数值将作为宽度值大小，高度值将被设定为 auto。
-
-  background-size: 50%
-
-如果有两个数值被给定，第一个将作为宽度值大小，第二个作为高度值大小。
-  background-size: 25px 50px;
-
-为了设定超过一张以上的图片尺寸时，需要提供多项数值，它们通过逗号分隔。
-
-  background-size: 50% 25%, contain, 3em;
-
-### [background-repeat 属性](https://developer.mozilla.org/zh-CN/docs/Web/CSS/background-repeat)
-
-应用:设置是否及如何重复背景图像。背景图像可以沿着水平轴，垂直轴，两个轴重复，或者根本不重复。
-
-默认地，背景图像在水平和垂直方向上重复。
-
-取值:
-
-- repeat ;图像会按需重复来覆盖整个背景图片所在的区域。最后一个图像会被裁剪，如果它的大小不合适的话。
-- no-repeat ;图像不会被重复 (因为背景图像所在的区域将可能没有完全被覆盖). 那个没有被重复的背景图像的位置是由 `background-position` 属性来决定。
-- space;
-- round ;
-
-> 背景图像的位置是根据 `background-position` 属性设置的。如果未规定 `background-position` 属性，图像会被放置在元素的左上角。
-
-
-### background-origin
-
-### background-clip
-
-### background-attachment
-
-### [background-image 未学完](https://developer.mozilla.org/zh-CN/docs/Web/CSS/background-image)
-
-应用：为一个元素设置一个或者多个背景图像。
-
-**默认地，背景图像位于元素的左上角，并在水平和垂直方向上重复。**
 
 ## [overflow 属性](https://developer.mozilla.org/zh-CN/docs/Web/CSS/overflow)
 
