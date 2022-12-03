@@ -1,7 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="400" height="400" style="background:#ccc">
-<!-- <circle cx="150" cy="150" r="100" fill="none" stroke="red" stroke-width="2"/> -->
-<path d="M150 50A50 50 0 0 1 150 150 A50 50 0 0 0 150 250 A100 100 0 0 1 150 50" fill="#000"/>
-<path d="M150 50A50 50 0 0 1 150 150 A50 50 0 0 0 150 250 A100 100 0 0 0 150 50" fill="#fff"/>
-<circle cx="150" cy="100" r="25" fill="#fff"/>
-<circle cx="150" cy="200" r="25" fill="#000"/>
-</svg>
